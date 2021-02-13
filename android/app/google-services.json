@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "785803886477",
+    "project_id": "videotomodelapp",
+    "storage_bucket": "videotomodelapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785803886477:android:f01fb0c26d359b92ed87c4",
+        "android_client_info": {
+          "package_name": "com.videotomodelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785803886477-64j59eoe7lh1s763jq2puuas6rnviqmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUvkwaYASjBgv7xxGBWLvNr6d0VuhUStI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785803886477-64j59eoe7lh1s763jq2puuas6rnviqmj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
