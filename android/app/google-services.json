@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "785803886477-pm3uf2qfkdempjgj36djsnlp51tcvrjc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videotomodelapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "785803886477-64j59eoe7lh1s763jq2puuas6rnviqmj.apps.googleusercontent.com",
           "client_type": 3
         }
