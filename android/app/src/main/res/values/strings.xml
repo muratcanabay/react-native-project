@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VideotoModelApp</string>
+    <string name="facebook_app_id">4035052756534442</string>
+    <string name="fb_login_protocol_scheme">fb4035052756534442</string>
 </resources>
