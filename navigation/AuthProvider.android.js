@@ -20,29 +20,25 @@ export const AuthProvider = ({children}) => {
             .catch((error) => {
               switch (error.code) {
                 case 'auth/user-not-found':
-                  Alert.alert(
-                    'User not found please check username and password!',
-                  );
+                  Alert.alert('E-posta adresi veya şifre yanlış');
                   break;
                 case 'auth/email-already-in-use':
-                  console.log('Email address' + email + ' already in use');
-                  break;
-                case 'auth/invalid-email':
-                  console.log('Email address' + email + 'is invalid.');
-                  break;
-                case 'auth/operation-not-allowed':
-                  console.log('Error during sign up.');
-                  break;
-                case 'auth/weak-password':
-                  console.log(
-                    `Password is not strong enough. 
-                    Add additional characters including special characters and numbers.`,
+                  Alert.alert(
+                    'Bu e-posta adresine sahip bir hesap bulunmaktadır',
                   );
                   break;
+                case 'auth/invalid-email':
+                  Alert.alert('Lütfen geçerli bir e-posta adresi girin');
+                  break;
+                case 'auth/operation-not-allowed':
+                  Alert.alert('Giriş yaparken bir hata meydana geldi');
+                  break;
                 case 'auth/unknown':
-                  Alert.alert('Please check your internet connection');
+                  Alert.alert(
+                    'Lütfen internet bağlantınız olduğundan emin olun',
+                  );
                 default:
-                  console.log(error.message);
+                  Alert.alert(error.message);
                   break;
               }
             });
@@ -94,11 +90,32 @@ export const AuthProvider = ({children}) => {
           }
         },
         register: async (email, password) => {
-          try {
-            await auth().createUserWithEmailAndPassword(email, password);
-          } catch (e) {
-            console.log(e);
-          }
+          await auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((u) => {})
+            .catch((error) => {
+              switch (error.code) {
+                case 'auth/email-already-in-use':
+                  Alert.alert(
+                    'Bu e-posta adresine sahip bir hesap bulunmaktadır',
+                  );
+                  break;
+                case 'auth/invalid-email':
+                  Alert.alert('Lütfen geçerli bir e-posta adresi girin');
+                  break;
+                case 'auth/operation-not-allowed':
+                  Alert.alert('Giriş yaparken bir hata meydana geldi');
+                  break;
+                case 'auth/unknown':
+                  Alert.alert(
+                    'Lütfen internet bağlantınız olduğundan emin olun',
+                  );
+                  break;
+                default:
+                  Alert.alert(error.message);
+                  break;
+              }
+            });
         },
         logout: async () => {
           try {
