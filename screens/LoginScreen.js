@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -17,33 +18,50 @@ import SocialButton from '../components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider.android';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
-  const [isValidMail, setIsValidMail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [data, setData] = useState({
+    mail: '',
+    password: '',
+    isValidMail: true,
+    isValidPassword: true,
+  });
 
   const {login, googleLogin, facebookLogin} = useContext(AuthContext);
 
-  const usernameValidation = (mail) => {
+  const onMailChange = (mail) => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (reg.test(mail) === false) {
-      setIsValidMail({isValidMail: false});
+    if (reg.test(mail) === true) {
+      setData({
+        ...data,
+        mail: mail,
+        isValidMail: true,
+      });
     } else {
-      setIsValidMail({isValidMail: true});
+      setData({
+        ...data,
+        mail: mail,
+        isValidMail: false,
+      });
     }
   };
 
-  const passwordValidation = (userPassword) => {
-    if (userPassword.trim().length < 8) {
-      setIsValidPassword({isValidPassword: false});
+  const onPasswordChange = (password) => {
+    if (password.trim().length >= 8) {
+      setData({
+        ...data,
+        password: password,
+        isValidPassword: true,
+      });
     } else {
-      setIsValidPassword({isValidPassword: true});
+      setData({
+        ...data,
+        password: password,
+        isValidPassword: false,
+      });
     }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Image
         source={require('../assets/rn-social-logo.png')}
         style={styles.logo}
@@ -55,7 +73,7 @@ const LoginScreen = ({navigation}) => {
           <AntDesign name={'user'} size={25} color="#666" />
         </View>
         <TextInput
-          value={email}
+          value={data.mail}
           style={styles.input}
           numberOfLines={1}
           placeholder={'Email'}
@@ -63,12 +81,11 @@ const LoginScreen = ({navigation}) => {
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={(userEmail) => usernameValidation(userEmail)}
-          onChangeText={(userEmail) => setEmail(userEmail)}
+          onChangeText={(userEmail) => onMailChange(userEmail)}
         />
       </View>
-
-      {isValidMail ? null : (
+      {console.log(data.mail)}
+      {data.isValidMail ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={styles.errorMsg}>Invalid mail adress.</Text>
         </Animatable.View>
@@ -79,18 +96,18 @@ const LoginScreen = ({navigation}) => {
           <AntDesign name={'lock'} size={25} color="#666" />
         </View>
         <TextInput
-          value={password}
+          value={data.password}
           style={styles.input}
           numberOfLines={1}
           placeholder={'Password'}
           placeholderTextColor="#666"
           secureTextEntry={true}
-          onChangeText={(userPassword) => passwordValidation(userPassword)}
-          onChangeText={(userPassword) => setPassword(userPassword)}
+          onChangeText={(userPassword) => onPasswordChange(userPassword)}
         />
       </View>
 
-      {isValidPassword ? null : (
+      {console.log(data.password)}
+      {data.isValidPassword ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={styles.errorMsg}>
             Password must be 8 characters long.
@@ -133,7 +150,7 @@ const LoginScreen = ({navigation}) => {
           Don't have an acount? Create here
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
