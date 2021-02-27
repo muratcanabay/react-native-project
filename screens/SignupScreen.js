@@ -1,10 +1,19 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  TextInput,
+} from 'react-native';
 
-import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
-import {AuthContext} from '../navigation/AuthProvider';
+import {AuthContext} from '../navigation/AuthProvider.android';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {windowHeight, windowWidth} from '../utils/Dimensions';
 
 const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -17,31 +26,55 @@ const SignupScreen = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.text}>Create an account</Text>
 
-      <FormInput
-        labelValue={email}
-        onChangeText={(userEmail) => setEmail(userEmail)}
-        placeholderText="Email"
-        iconType="user"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
+      <View style={styles.inputContainer}>
+        <View style={styles.iconStyle}>
+          <AntDesign name={'user'} size={25} color="#666" />
+        </View>
+        <TextInput
+          value={email}
+          style={styles.input}
+          numberOfLines={1}
+          placeholder={'Email'}
+          placeholderTextColor="#666"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(userEmail) => usernameValidation(userEmail)}
+          onChangeText={(userEmail) => setEmail(userEmail)}
+        />
+      </View>
 
-      <FormInput
-        labelValue={password}
-        onChangeText={(userPassword) => setPassword(userPassword)}
-        placeholderText="Password"
-        iconType="lock"
-        secureTextEntry={true}
-      />
+      <View style={styles.inputContainer}>
+        <View style={styles.iconStyle}>
+          <AntDesign name={'lock'} size={25} color="#666" />
+        </View>
+        <TextInput
+          value={password}
+          style={styles.input}
+          numberOfLines={1}
+          placeholder={'Password'}
+          placeholderTextColor="#666"
+          secureTextEntry={true}
+          onChangeText={(userPassword) => passwordValidation(userPassword)}
+          onChangeText={(userPassword) => setPassword(userPassword)}
+        />
+      </View>
 
-      <FormInput
-        labelValue={confirmPassword}
-        onChangeText={(userPassword) => setConfirmPassword(userPassword)}
-        placeholderText="Confirm Password"
-        iconType="lock"
-        secureTextEntry={true}
-      />
+      <View style={styles.inputContainer}>
+        <View style={styles.iconStyle}>
+          <AntDesign name={'lock'} size={25} color="#666" />
+        </View>
+        <TextInput
+          value={confirmPassword}
+          style={styles.input}
+          numberOfLines={1}
+          placeholder={'Password'}
+          placeholderTextColor="#666"
+          secureTextEntry={true}
+          onChangeText={(confirmPassword) => passwordValidation(confirmPassword)}
+          onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+        />
+      </View>
 
       <FormButton
         buttonTitle="Sign Up"
@@ -129,5 +162,46 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontFamily: 'Lato-Regular',
     color: 'grey',
+  },
+  // Form Style
+  inputContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    height: windowHeight / 15,
+    borderColor: '#ccc',
+    borderRadius: 3,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  iconStyle: {
+    padding: 10,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightColor: '#ccc',
+    borderRightWidth: 1,
+    width: 50,
+  },
+  input: {
+    padding: 10,
+    flex: 1,
+    fontSize: 16,
+    fontFamily: 'Lato-Regular',
+    color: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputField: {
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 10,
+    width: windowWidth / 1.5,
+    height: windowHeight / 15,
+    fontSize: 16,
+    borderRadius: 8,
+    borderWidth: 1,
   },
 });

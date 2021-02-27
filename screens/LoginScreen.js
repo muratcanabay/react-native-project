@@ -6,18 +6,42 @@ import {
   Image,
   StyleSheet,
   Platform,
+  TextInput,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {windowHeight, windowWidth} from '../utils/Dimensions';
 
-import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
-import {AuthContext} from '../navigation/AuthProvider';
+import {AuthContext} from '../navigation/AuthProvider.android';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
+  const [isValidMail, setIsValidMail] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+
   const {login, googleLogin, facebookLogin} = useContext(AuthContext);
+
+  const usernameValidation = (mail) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(mail) === false) {
+      setIsValidMail({isValidMail: false});
+    } else {
+      setIsValidMail({isValidMail: true});
+    }
+  };
+
+  const passwordValidation = (userPassword) => {
+    if (userPassword.trim().length < 8) {
+      setIsValidPassword({isValidPassword: false});
+    } else {
+      setIsValidPassword({isValidPassword: true});
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -26,22 +50,54 @@ const LoginScreen = ({navigation}) => {
       />
       <Text style={styles.text}>Video to 3D Model</Text>
 
-      <FormInput
-        labelValue={email}
-        onChangeText={(userEmail) => setEmail(userEmail)}
-        placeholderText="Email"
-        iconType="user"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <FormInput
-        labelValue={password}
-        onChangeText={(userPassword) => setPassword(userPassword)}
-        placeholderText="Password"
-        iconType="lock"
-        secureTextEntry={true}
-      />
+      <View style={styles.inputContainer}>
+        <View style={styles.iconStyle}>
+          <AntDesign name={'user'} size={25} color="#666" />
+        </View>
+        <TextInput
+          value={email}
+          style={styles.input}
+          numberOfLines={1}
+          placeholder={'Email'}
+          placeholderTextColor="#666"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(userEmail) => usernameValidation(userEmail)}
+          onChangeText={(userEmail) => setEmail(userEmail)}
+        />
+      </View>
+
+      {isValidMail ? null : (
+        <Animatable.View animation="fadeInLeft" duration={500}>
+          <Text style={styles.errorMsg}>Invalid mail adress.</Text>
+        </Animatable.View>
+      )}
+
+      <View style={styles.inputContainer}>
+        <View style={styles.iconStyle}>
+          <AntDesign name={'lock'} size={25} color="#666" />
+        </View>
+        <TextInput
+          value={password}
+          style={styles.input}
+          numberOfLines={1}
+          placeholder={'Password'}
+          placeholderTextColor="#666"
+          secureTextEntry={true}
+          onChangeText={(userPassword) => passwordValidation(userPassword)}
+          onChangeText={(userPassword) => setPassword(userPassword)}
+        />
+      </View>
+
+      {isValidPassword ? null : (
+        <Animatable.View animation="fadeInLeft" duration={500}>
+          <Text style={styles.errorMsg}>
+            Password must be 8 characters long.
+          </Text>
+        </Animatable.View>
+      )}
+
       <FormButton
         buttonTitle="Sign In"
         onPress={() => login(email, password)}
@@ -114,5 +170,50 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#2e64e5',
     fontFamily: 'Lato-Regular',
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
+  },
+  // Form Style
+  inputContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    height: windowHeight / 15,
+    borderColor: '#ccc',
+    borderRadius: 3,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  iconStyle: {
+    padding: 10,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightColor: '#ccc',
+    borderRightWidth: 1,
+    width: 50,
+  },
+  input: {
+    padding: 10,
+    flex: 1,
+    fontSize: 16,
+    fontFamily: 'Lato-Regular',
+    color: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputField: {
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 10,
+    width: windowWidth / 1.5,
+    height: windowHeight / 15,
+    fontSize: 16,
+    borderRadius: 8,
+    borderWidth: 1,
   },
 });
