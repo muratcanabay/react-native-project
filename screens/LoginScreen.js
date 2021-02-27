@@ -10,8 +10,11 @@ import {
   ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import {windowHeight, windowWidth} from '../utils/Dimensions';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
@@ -23,6 +26,7 @@ const LoginScreen = ({navigation}) => {
     password: '',
     isValidMail: true,
     isValidPassword: true,
+    showPassword: true,
   });
 
   const {login, googleLogin, facebookLogin} = useContext(AuthContext);
@@ -60,6 +64,13 @@ const LoginScreen = ({navigation}) => {
     }
   };
 
+  const showPassword = () => {
+    setData({
+      ...data,
+      showPassword: !data.showPassword,
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
@@ -84,7 +95,6 @@ const LoginScreen = ({navigation}) => {
           onChangeText={(userEmail) => onMailChange(userEmail)}
         />
       </View>
-      {console.log(data.mail)}
       {data.isValidMail ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={styles.errorMsg}>Invalid mail adress.</Text>
@@ -101,12 +111,28 @@ const LoginScreen = ({navigation}) => {
           numberOfLines={1}
           placeholder={'Password'}
           placeholderTextColor="#666"
-          secureTextEntry={true}
+          secureTextEntry={data.showPassword ? true : false}
           onChangeText={(userPassword) => onPasswordChange(userPassword)}
         />
+        <TouchableOpacity onPress={showPassword}>
+          {data.showPassword ? (
+            <Feather
+              style={{marginRight: 6}}
+              name="eye-off"
+              color="grey"
+              size={20}
+            />
+          ) : (
+            <Feather
+              style={{marginRight: 6}}
+              name="eye"
+              color="grey"
+              size={20}
+            />
+          )}
+        </TouchableOpacity>
       </View>
 
-      {console.log(data.password)}
       {data.isValidPassword ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={styles.errorMsg}>
