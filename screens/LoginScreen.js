@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Platform,
   TextInput,
-  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
@@ -19,6 +18,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider.android';
+
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({navigation}) => {
   const [data, setData] = useState({
@@ -72,7 +73,11 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps={'always'}
+      style={{flex: 1}}
+      showsVerticalScrollIndicator={true}
+      contentContainerStyle={styles.container}>
       <Image
         source={require('../assets/rn-social-logo.png')}
         style={styles.logo}
@@ -176,7 +181,7 @@ const LoginScreen = ({navigation}) => {
           Don't have an acount? Create here
         </Text>
       </TouchableOpacity>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
