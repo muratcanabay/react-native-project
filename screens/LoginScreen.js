@@ -77,15 +77,15 @@ const LoginScreen = ({navigation}) => {
     console.log(mail);
     console.log(password);
     if (mail.trim() === '' || password.trim() === '') {
-      Alert.alert('Username and password cannot be empty!');
+      Alert.alert('Email veya şifre boş bırakılamaz.');
       return false;
     }
     if (!data.isValidMail) {
-      Alert.alert(mail + ' is not a valid e-mail address!');
+      Alert.alert('Lütfen geçerli bir mail adresi giriniz.');
       return false;
     }
     if (!data.isValidPassword) {
-      Alert.alert('Password is too short!');
+      Alert.alert('Şifre en az 8 karakter uzunluğunda olmalıdır.');
       return false;
     }
     return true;
@@ -101,7 +101,7 @@ const LoginScreen = ({navigation}) => {
         source={require('../assets/rn-social-logo.png')}
         style={styles.logo}
       />
-      <Text style={styles.text}>Video to 3D Model</Text>
+      <Text style={styles.text}>ALIVE DESIGN</Text>
 
       <View style={styles.inputContainer}>
         <View style={styles.iconStyle}>
@@ -111,7 +111,7 @@ const LoginScreen = ({navigation}) => {
           value={data.mail}
           style={styles.input}
           numberOfLines={1}
-          placeholder={'Email'}
+          placeholder={'E-posta'}
           placeholderTextColor="#666"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -121,7 +121,9 @@ const LoginScreen = ({navigation}) => {
       </View>
       {data.isValidMail ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
-          <Text style={styles.errorMsg}>Invalid mail adress.</Text>
+          <Text style={styles.errorMsg}>
+            Lütfen geçerli bir mail adresi giriniz
+          </Text>
         </Animatable.View>
       )}
 
@@ -133,7 +135,7 @@ const LoginScreen = ({navigation}) => {
           value={data.password}
           style={styles.input}
           numberOfLines={1}
-          placeholder={'Password'}
+          placeholder={'Şifre'}
           placeholderTextColor="#666"
           secureTextEntry={data.showPassword ? true : false}
           onChangeText={(userPassword) => onPasswordChange(userPassword)}
@@ -160,13 +162,13 @@ const LoginScreen = ({navigation}) => {
       {data.isValidPassword ? null : (
         <Animatable.View animation="fadeInLeft" duration={500}>
           <Text style={styles.errorMsg}>
-            Password must be 8 characters long.
+            Şifre en az 8 karakter uzunluğunda olmalıdır.
           </Text>
         </Animatable.View>
       )}
 
       <FormButton
-        buttonTitle="Sign In"
+        buttonTitle="Giriş Yap"
         onPress={() =>
           handleLogin(data.mail, data.password)
             ? login(data.mail, data.password)
@@ -174,12 +176,12 @@ const LoginScreen = ({navigation}) => {
         }
       />
       <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
-        <Text style={styles.navButtonText}>Forgot Password?</Text>
+        <Text style={styles.navButtonText}>Şifrenizi mi unuttunuz?</Text>
       </TouchableOpacity>
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Sign In with Facebook"
+            buttonTitle="Facebook'la Giriş Yap"
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
@@ -187,7 +189,7 @@ const LoginScreen = ({navigation}) => {
           />
 
           <SocialButton
-            buttonTitle="Sign In with Google"
+            buttonTitle="Google'la Giriş Yap"
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
@@ -200,9 +202,7 @@ const LoginScreen = ({navigation}) => {
       <TouchableOpacity
         style={styles.forgotButton}
         onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.navButtonText}>
-          Don't have an acount? Create here
-        </Text>
+        <Text style={styles.navButtonText}>Hesabınız yok mu? Kaydol</Text>
       </TouchableOpacity>
     </KeyboardAwareScrollView>
   );
@@ -234,7 +234,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotButton: {
-    marginVertical: 35,
+    marginVertical: 15,
+    marginBottom: 45,
   },
   navButtonText: {
     fontSize: 18,
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     color: '#FF0000',
-    fontSize: 14,
+    fontSize: 12,
   },
   // Form Style
   inputContainer: {
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Lato-Regular',
     color: '#333',
     justifyContent: 'center',

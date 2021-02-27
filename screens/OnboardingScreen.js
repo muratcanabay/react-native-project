@@ -4,19 +4,19 @@ import Onboarding from 'react-native-onboarding-swiper';
 
 const Skip = ({...props}) => (
   <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Skip</Text>
+    <Text style={{fontSize: 16}}>Atla</Text>
   </TouchableOpacity>
 );
 
 const Next = ({...props}) => (
   <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Next</Text>
+    <Text style={{fontSize: 16}}>Geç</Text>
   </TouchableOpacity>
 );
 
 const Done = ({...props}) => (
   <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Done</Text>
+    <Text style={{fontSize: 16}}>Tamamla</Text>
   </TouchableOpacity>
 );
 

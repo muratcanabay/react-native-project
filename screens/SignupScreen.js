@@ -18,13 +18,12 @@ import {windowHeight, windowWidth} from '../utils/Dimensions';
 const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
 
   const {register} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Create an account</Text>
+      <Text style={styles.text}>Yeni Üyelik Oluştur</Text>
 
       <View style={styles.inputContainer}>
         <View style={styles.iconStyle}>
@@ -52,7 +51,7 @@ const SignupScreen = ({navigation}) => {
           value={password}
           style={styles.input}
           numberOfLines={1}
-          placeholder={'Password'}
+          placeholder={'Şifre'}
           placeholderTextColor="#666"
           secureTextEntry={true}
           onChangeText={(userPassword) => passwordValidation(userPassword)}
@@ -60,51 +59,15 @@ const SignupScreen = ({navigation}) => {
         />
       </View>
 
-      <View style={styles.inputContainer}>
-        <View style={styles.iconStyle}>
-          <AntDesign name={'lock'} size={25} color="#666" />
-        </View>
-        <TextInput
-          value={confirmPassword}
-          style={styles.input}
-          numberOfLines={1}
-          placeholder={'Password'}
-          placeholderTextColor="#666"
-          secureTextEntry={true}
-          onChangeText={(confirmPassword) =>
-            passwordValidation(confirmPassword)
-          }
-          onChangeText={(confirmPassword) =>
-            setConfirmPassword(confirmPassword)
-          }
-        />
-      </View>
-
       <FormButton
-        buttonTitle="Sign Up"
+        buttonTitle="Kaydol"
         onPress={() => register(email, password)}
       />
 
-      <View style={styles.textPrivate}>
-        <Text style={styles.color_textPrivate}>
-          By registering, you confirm that you accept our{' '}
-        </Text>
-        <TouchableOpacity onPress={() => {}}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-            Terms of service
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.color_textPrivate}> and </Text>
-        <TouchableOpacity onPress={() => {}}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-            Privacy Policy
-          </Text>
-        </TouchableOpacity>
-      </View>
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Sign Up with Facebook"
+            buttonTitle="Facebook'la Giriş Yap"
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
@@ -112,7 +75,7 @@ const SignupScreen = ({navigation}) => {
           />
 
           <SocialButton
-            buttonTitle="Sign Up with Google"
+            buttonTitle="Google'la Giriş Yap"
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
@@ -124,7 +87,9 @@ const SignupScreen = ({navigation}) => {
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.navButtonText}>Have an account? Sign In</Text>
+        <Text style={styles.navButtonText}>
+          Zaten üye misin? Üye girişi yap
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -154,18 +119,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#2e64e5',
     fontFamily: 'Lato-Regular',
-  },
-  textPrivate: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 35,
-    justifyContent: 'center',
-  },
-  color_textPrivate: {
-    fontSize: 13,
-    fontWeight: '400',
-    fontFamily: 'Lato-Regular',
-    color: 'grey',
   },
   // Form Style
   inputContainer: {
