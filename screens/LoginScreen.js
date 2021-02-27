@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   TextInput,
+  Alert,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
@@ -70,6 +71,24 @@ const LoginScreen = ({navigation}) => {
       ...data,
       showPassword: !data.showPassword,
     });
+  };
+
+  const handleLogin = (mail, password) => {
+    console.log(mail);
+    console.log(password);
+    if (mail.trim() === '' || password.trim() === '') {
+      Alert.alert('Username and password cannot be empty!');
+      return false;
+    }
+    if (!data.isValidMail) {
+      Alert.alert(mail + ' is not a valid e-mail address!');
+      return false;
+    }
+    if (!data.isValidPassword) {
+      Alert.alert('Password is too short!');
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -148,7 +167,11 @@ const LoginScreen = ({navigation}) => {
 
       <FormButton
         buttonTitle="Sign In"
-        onPress={() => login(email, password)}
+        onPress={() =>
+          handleLogin(data.mail, data.password)
+            ? login(data.mail, data.password)
+            : null
+        }
       />
       <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
         <Text style={styles.navButtonText}>Forgot Password?</Text>

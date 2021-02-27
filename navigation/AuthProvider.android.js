@@ -3,6 +3,7 @@ import React, {createContext, useState} from 'react';
 
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import {Alert} from 'react-native';
 
 export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
@@ -13,11 +14,38 @@ export const AuthProvider = ({children}) => {
         user,
         setUser,
         login: async (email, password) => {
-          try {
-            await auth().signInWithEmailAndPassword(email, password);
-          } catch (e) {
-            console.log(e);
-          }
+          await auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((u) => {})
+            .catch((error) => {
+              switch (error.code) {
+                case 'auth/user-not-found':
+                  Alert.alert(
+                    'User not found please check username and password!',
+                  );
+                  break;
+                case 'auth/email-already-in-use':
+                  console.log('Email address' + email + ' already in use');
+                  break;
+                case 'auth/invalid-email':
+                  console.log('Email address' + email + 'is invalid.');
+                  break;
+                case 'auth/operation-not-allowed':
+                  console.log('Error during sign up.');
+                  break;
+                case 'auth/weak-password':
+                  console.log(
+                    `Password is not strong enough. 
+                    Add additional characters including special characters and numbers.`,
+                  );
+                  break;
+                case 'auth/unknown':
+                  Alert.alert('Please check your internet connection');
+                default:
+                  console.log(error.message);
+                  break;
+              }
+            });
         },
         googleLogin: async () => {
           try {
