@@ -6,20 +6,85 @@ import {
   StyleSheet,
   Platform,
   TextInput,
+  Alert,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+
+import {windowHeight, windowWidth} from '../utils/Dimensions';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider.android';
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {windowHeight, windowWidth} from '../utils/Dimensions';
-
 const SignupScreen = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [data, setData] = useState({
+    mail: '',
+    password: '',
+    isValidMail: true,
+    isValidPassword: true,
+    showPassword: true,
+  });
 
-  const {register} = useContext(AuthContext);
+  const {register, googleLogin, facebookLogin} = useContext(AuthContext);
+
+  const onMailChange = (mail) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(mail) === true) {
+      setData({
+        ...data,
+        mail: mail,
+        isValidMail: true,
+      });
+    } else {
+      setData({
+        ...data,
+        mail: mail,
+        isValidMail: false,
+      });
+    }
+  };
+
+  const onPasswordChange = (password) => {
+    if (password.trim().length >= 8) {
+      setData({
+        ...data,
+        password: password,
+        isValidPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        password: password,
+        isValidPassword: false,
+      });
+    }
+  };
+
+  const showPassword = () => {
+    setData({
+      ...data,
+      showPassword: !data.showPassword,
+    });
+  };
+
+  const handleLogin = (mail, password) => {
+    if (mail.trim() === '' || password.trim() === '') {
+      Alert.alert('Email veya şifre boş bırakılamaz.');
+      return false;
+    }
+    if (!data.isValidMail) {
+      Alert.alert('Lütfen geçerli bir mail adresi giriniz.');
+      return false;
+    }
+    if (!data.isValidPassword) {
+      Alert.alert('Şifre en az 8 karakter uzunluğunda olmalıdır.');
+      return false;
+    }
+    return true;
+  };
 
   return (
     <View style={styles.container}>
@@ -30,7 +95,7 @@ const SignupScreen = ({navigation}) => {
           <AntDesign name={'user'} size={25} color="#666" />
         </View>
         <TextInput
-          value={email}
+          value={data.mail}
           style={styles.input}
           numberOfLines={1}
           placeholder={'Email'}
@@ -38,30 +103,65 @@ const SignupScreen = ({navigation}) => {
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={(userEmail) => usernameValidation(userEmail)}
-          onChangeText={(userEmail) => setEmail(userEmail)}
+          onChangeText={(userEmail) => onMailChange(userEmail)}
         />
       </View>
+
+      {data.isValidMail ? null : (
+        <Animatable.View animation="fadeInLeft" duration={500}>
+          <Text style={styles.errorMsg}>
+            Lütfen geçerli bir mail adresi giriniz
+          </Text>
+        </Animatable.View>
+      )}
 
       <View style={styles.inputContainer}>
         <View style={styles.iconStyle}>
           <AntDesign name={'lock'} size={25} color="#666" />
         </View>
         <TextInput
-          value={password}
+          value={data.password}
           style={styles.input}
           numberOfLines={1}
           placeholder={'Şifre'}
           placeholderTextColor="#666"
-          secureTextEntry={true}
-          onChangeText={(userPassword) => passwordValidation(userPassword)}
-          onChangeText={(userPassword) => setPassword(userPassword)}
+          secureTextEntry={data.showPassword ? true : false}
+          onChangeText={(userPassword) => onPasswordChange(userPassword)}
         />
+        <TouchableOpacity onPress={showPassword}>
+          {data.showPassword ? (
+            <Feather
+              style={{marginRight: 6}}
+              name="eye-off"
+              color="grey"
+              size={20}
+            />
+          ) : (
+            <Feather
+              style={{marginRight: 6}}
+              name="eye"
+              color="grey"
+              size={20}
+            />
+          )}
+        </TouchableOpacity>
       </View>
+
+      {data.isValidPassword ? null : (
+        <Animatable.View animation="fadeInLeft" duration={500}>
+          <Text style={styles.errorMsg}>
+            Şifre en az 8 karakter uzunluğunda olmalıdır.
+          </Text>
+        </Animatable.View>
+      )}
 
       <FormButton
         buttonTitle="Kaydol"
-        onPress={() => register(email, password)}
+        onPress={() =>
+          handleLogin(data.mail, data.password)
+            ? register(data.mail, data.password)
+            : null
+        }
       />
 
       {Platform.OS === 'android' ? (
@@ -71,7 +171,7 @@ const SignupScreen = ({navigation}) => {
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
-            onPress={() => {}}
+            onPress={() => facebookLogin()}
           />
 
           <SocialButton
@@ -79,7 +179,7 @@ const SignupScreen = ({navigation}) => {
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
-            onPress={() => {}}
+            onPress={() => googleLogin()}
           />
         </View>
       ) : null}
@@ -119,6 +219,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#2e64e5',
     fontFamily: 'Lato-Regular',
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 12,
   },
   // Form Style
   inputContainer: {
