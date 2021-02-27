@@ -71,8 +71,12 @@ const SignupScreen = ({navigation}) => {
           placeholder={'Password'}
           placeholderTextColor="#666"
           secureTextEntry={true}
-          onChangeText={(confirmPassword) => passwordValidation(confirmPassword)}
-          onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+          onChangeText={(confirmPassword) =>
+            passwordValidation(confirmPassword)
+          }
+          onChangeText={(confirmPassword) =>
+            setConfirmPassword(confirmPassword)
+          }
         />
       </View>
 
