@@ -74,8 +74,6 @@ const LoginScreen = ({navigation}) => {
   };
 
   const handleLogin = (mail, password) => {
-    console.log(mail);
-    console.log(password);
     if (mail.trim() === '' || password.trim() === '') {
       Alert.alert('Email veya şifre boş bırakılamaz.');
       return false;
