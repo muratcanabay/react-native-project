@@ -18,6 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider.android';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SignupScreen = ({navigation}) => {
   const [data, setData] = useState({
@@ -87,7 +88,9 @@ const SignupScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps={'handled'}
+      contentContainerStyle={styles.container}>
       <Text style={styles.text}>Yeni Üyelik Oluştur</Text>
 
       <View style={styles.inputContainer}>
@@ -167,7 +170,7 @@ const SignupScreen = ({navigation}) => {
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Facebook'la Giriş Yap"
+            buttonTitle="Facebook'la Kaydol"
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
@@ -175,7 +178,7 @@ const SignupScreen = ({navigation}) => {
           />
 
           <SocialButton
-            buttonTitle="Google'la Giriş Yap"
+            buttonTitle="Google'la Kaydol"
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
@@ -191,7 +194,7 @@ const SignupScreen = ({navigation}) => {
           Zaten üye misin? Üye girişi yap
         </Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

@@ -91,9 +91,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <KeyboardAwareScrollView
-      keyboardShouldPersistTaps={'always'}
-      style={{flex: 1}}
-      showsVerticalScrollIndicator={true}
+      keyboardShouldPersistTaps={'handled'}
       contentContainerStyle={styles.container}>
       <Image
         source={require('../assets/rn-social-logo.png')}
@@ -232,10 +230,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotButton: {
-    marginVertical: 15,
     marginBottom: 45,
   },
   navButtonText: {
+    marginTop: 10,
     fontSize: 18,
     fontWeight: '500',
     color: '#2e64e5',
