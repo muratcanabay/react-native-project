@@ -83,7 +83,7 @@ const SignupScreen = ({navigation}) => {
       setError({
         ...error,
         visible: true,
-        errorTitle: 'Giriş Hatası',
+        errorTitle: 'Kayıt Hatası',
         errorDescription: 'Email veya şifre alanı boş bırakılamaz.',
       });
       return false;
@@ -92,7 +92,7 @@ const SignupScreen = ({navigation}) => {
       setError({
         ...error,
         visible: true,
-        errorTitle: 'Giriş Hatası',
+        errorTitle: 'Kayıt Hatası',
         errorDescription: 'Lütfen geçerli bir mail adresi giriniz.',
       });
       return false;
@@ -101,7 +101,7 @@ const SignupScreen = ({navigation}) => {
       setError({
         ...error,
         visible: true,
-        errorTitle: 'Giriş Hatası',
+        errorTitle: 'Kayıt Hatası',
         errorDescription: 'Şifre en az 8 karakter uzunluğunda olmalıdır.',
       });
       return false;
